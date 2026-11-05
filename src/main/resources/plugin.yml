@@ -1,0 +1,18 @@
+name: WaveDonate
+version: ${project.version}
+main: ru.wavedonate.plugin.WaveDonatePlugin
+api-version: '1.13'
+folia-supported: true
+authors: [WaveDonate]
+website: https://wdonate.wtf
+description: WaveDonate delivery plugin for Minecraft shops.
+commands:
+  wavedonate:
+    description: WaveDonate admin command
+    aliases: [wdonate, wd]
+    usage: /wd <setup|status|ping|check|queue|test|reload>
+    permission: wavedonate.admin
+permissions:
+  wavedonate.admin:
+    description: Allows using WaveDonate admin commands.
+    default: op
