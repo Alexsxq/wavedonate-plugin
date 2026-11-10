@@ -31,7 +31,8 @@ final class PendingOrder {
     static PendingOrder fromJson(Map<String, Object> o) {
         long id = Json.number(o.get("id"), -1);
         String player = Json.string(o.get("player"), null);
-        if (id <= 0 || player == null || player.isEmpty()) {
+        String from = Json.string(o.get("gift_from"), null);
+        if (id <= 0 || !validNick(player) || (from != null && !validNick(from))) {
             return null;
         }
         List<String> commands = new ArrayList<String>();
@@ -39,7 +40,13 @@ final class PendingOrder {
             if (c != null) commands.add(String.valueOf(c));
         }
         return new PendingOrder(id, player, Json.string(o.get("product_name"), null), Json.string(o.get("amount"), "0"),
-            Json.string(o.get("gift_from"), null), Json.string(o.get("quantity"), null), commands);
+            from, Json.string(o.get("quantity"), null), commands);
+    }
+
+    private static final java.util.regex.Pattern NICK = java.util.regex.Pattern.compile("[A-Za-z0-9_.]{1,32}");
+
+    static boolean validNick(String nick) {
+        return nick != null && NICK.matcher(nick).matches();
     }
 
     String apply(String text) {

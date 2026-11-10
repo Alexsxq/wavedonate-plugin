@@ -292,8 +292,12 @@ public final class WaveDonatePlugin extends JavaPlugin implements Listener {
     }
 
     String message(String key) {
-        String prefix = getConfig().getString("messages.prefix", "&bWaveDonate &8» ");
-        return prefix + getConfig().getString("messages." + key, key);
+        return text("messages.prefix", "&bWaveDonate &8» ") + text("messages." + key, key);
+    }
+
+    private String text(String path, String fallback) {
+        String value = getConfig().getString(path);
+        return value != null ? value : fallback;
     }
 
     Tasks tasks() {
