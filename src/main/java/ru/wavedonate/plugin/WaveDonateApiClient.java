@@ -163,10 +163,13 @@ final class WaveDonateApiClient {
 
             KeyStore extraStore = KeyStore.getInstance(KeyStore.getDefaultType());
             extraStore.load(null, null);
-            InputStream pem = WaveDonateApiClient.class.getResourceAsStream("/isrg-root-x1.pem");
+            InputStream pem = WaveDonateApiClient.class.getResourceAsStream("/letsencrypt-roots.pem");
             if (pem == null) return null;
             try {
-                extraStore.setCertificateEntry("isrg-root-x1", CertificateFactory.getInstance("X.509").generateCertificate(pem));
+                int n = 0;
+                for (java.security.cert.Certificate cert : CertificateFactory.getInstance("X.509").generateCertificates(pem)) {
+                    extraStore.setCertificateEntry("letsencrypt-root-" + (n++), cert);
+                }
             } finally {
                 pem.close();
             }
